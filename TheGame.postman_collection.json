@@ -6,65 +6,139 @@
 	},
 	"item": [
 		{
-			"name": "Get Game",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/game/player/getPlayer/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"game",
-						"player",
-						"getPlayer",
-						"1"
-					]
+			"name": "GameController",
+			"item": [
+				{
+					"name": "get_game",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_ip}}:{{server_port}}/game/{{game_id}}",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "{{server_port}}",
+							"path": [
+								"game",
+								"{{game_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "end_turn",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_ip}}:{{server_port}}/game/{{game_id}}/{{player_id}}",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "{{server_port}}",
+							"path": [
+								"game",
+								"{{game_id}}",
+								"{{player_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_game",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_ip}}:{{server_port}}/game/{{game_name}}",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "{{server_port}}",
+							"path": [
+								"game",
+								"{{game_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "play_card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_ip}}:{{server_port}}/game/{{game_id}}/{{player_id}}/{{pile_id}}/{{card}}",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "{{server_port}}",
+							"path": [
+								"game",
+								"{{game_id}}",
+								"{{player_id}}",
+								"{{pile_id}}",
+								"{{card}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "end_turn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_ip}}:{{server_port}}/game/{{game_id}}/{{player_id}}",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "{{server_port}}",
+							"path": [
+								"game",
+								"{{game_id}}",
+								"{{player_id}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Create Game",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5050/game",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5050",
-					"path": [
-						"game"
-					]
+			"name": "PlayerController",
+			"item": [
+				{
+					"name": "add_player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{server_ip}}:{{server_port}}/player/{{game_id}}/{{player_name}}",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "{{server_port}}",
+							"path": [
+								"player",
+								"{{game_id}}",
+								"{{player_name}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Player",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "localhost:5050/player/<game_id>/<player_name>",
-					"host": [
-						"localhost"
-					],
-					"port": "5050",
-					"path": [
-						"player",
-						"<game_id>",
-						"<player_name>"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [
@@ -99,6 +173,26 @@
 		{
 			"key": "game_name",
 			"value": "test"
+		},
+		{
+			"key": "player_id",
+			"value": "player_id"
+		},
+		{
+			"key": "pile_id",
+			"value": "pile_id"
+		},
+		{
+			"key": "card",
+			"value": "card"
+		},
+		{
+			"key": "server_ip",
+			"value": "localhost"
+		},
+		{
+			"key": "server_port",
+			"value": "5050"
 		}
 	]
 }
