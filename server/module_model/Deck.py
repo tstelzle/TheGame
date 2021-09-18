@@ -9,3 +9,6 @@ class Deck:
 
     def mix_cards(self):
         random.shuffle(self.cards)
+
+    def handout_card(self):
+        return self.cards.pop(0)

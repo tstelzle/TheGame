@@ -18,14 +18,54 @@ class GameController(Resource):
         return str(game_uid), 201
 
     @staticmethod
-    @app.route("/game/<game_uid>", methods=["GET"])
-    def get_game(game_uid: str):
-        searched_game = None
-        for game in Data.GAMES:
-            if str(game["id"]) == game_uid:
-                searched_game = game
+    @app.route("/game/<game_id>", methods=["GET"])
+    def get_game(game_id: str):
+        game = Data.get_game(game_id)
 
-        if searched_game is None:
-            raise Exception("Game Not Found")
+        return game.name, 201
 
-        return searched_game["game"].name, 201
+    @staticmethod
+    @app.route("/game/<game_id>/<player_id>/<pile_id>/<card>", methods=["POST"])
+    def play_card(game_id: str, player_id: str, pile_id: int, card: int):
+        game = Data.get_game(game_id)
+        player = game.get_player(player_id)
+        if player != game.get_current_player():
+            return "Not Your Turn", 400
+        pile = game.get_pile(pile_id)
+        top_card = pile.top_card
+        card_accepted = False
+        if pile_id == 0 or pile_id == 1:
+            if card > top_card:
+                card_accepted = True
+            elif card + 10 == top_card:
+                card_accepted = True
+
+        if pile_id == 2 or pile_id == 3:
+            if card < top_card:
+                card_accepted = True
+            elif card - 10 == top_card:
+                card_accepted = True
+
+        if card_accepted:
+            player.hand_cards.remove(card)
+            pile.top_card = card
+            return 200
+
+        return "Card Not Placeable", 400
+
+    @staticmethod
+    @app.route("/game/<game_id>/<player_id>", methods=["POST"])
+    def end_turn(game_id: str, player_id: str):
+        game = Data.get_game(game_id)
+        player = game.get_player(player_id)
+        while len(player.hand_cards) < game.starting_cards:
+            if len(game.deck.cards) > 0:
+                game.handout_card(player)
+
+    @staticmethod
+    @app.route("/player/<game_id>/<player_id>", methods=["GET"])
+    def get_handcards(game_id: str, player_id: str):
+        game = Data.get_game(game_id)
+        player = game.get_player(player_id)
+
+        return player.hand_cards, 200
