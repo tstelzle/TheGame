@@ -13,13 +13,31 @@ The Client will repeately ask the server for new information and hence is able t
 ```shell
 cd server
 pip install -r requirements.txt
-python3 main.py
+python3 server.py
 ```
 
-## Features
+### API
 
-### Necessary Features
+The current API clas can be tested and run with the Postman collection.
 
-1. Moves API for the last changes made in the game
-2. Create Player API
-3. Create Game API
+[Collection](./TheGame.postman_collection.json)
+
+
+
+## Client
+
+```shell
+cd client
+pip install -r requirements.txt
+python3 client.py
+```
+
+### Create Executable
+
+```shell
+pip install pyinstaller
+cd client
+pyinstaller --onefile client.py
+./dist/client &
+```
+
