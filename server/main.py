@@ -1,12 +1,8 @@
-from flask import Flask
-from flask_restful import Api
-from module_controller import *
+import module_controller
 
-app = Flask(__name__)
-app.config["DEBUG"] = True
-api = Api(app)
+from app import api, app
 
-api.add_resource(GameController, "/game/<string:name>")
+api.add_resource(module_controller.GameController)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050)
