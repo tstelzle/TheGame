@@ -7,8 +7,9 @@ from app import app
 
 class GameController(Resource):
 
+    @staticmethod
     @app.route("/game/<name>", methods=["POST"])
-    def post(name: str):
+    def add_game(name: str):
         game_uid = uuid.uuid1()
         game = Game(name, game_uid)
 
@@ -16,8 +17,9 @@ class GameController(Resource):
 
         return str(game_uid), 201
 
+    @staticmethod
     @app.route("/game/<game_uid>", methods=["GET"])
-    def get(game_uid: str):
+    def get_game(game_uid: str):
         searched_game = None
         for game in Data.GAMES:
             if str(game["id"]) == game_uid:
