@@ -35,6 +35,18 @@ class GameController(Resource):
                        data=player_names), 200
 
     @staticmethod
+    @app.route("/game/currentPlayer/<game_uid>", methods=["GET"])
+    def get_current_player(game_uid: str):
+        game = Data.get_game(game_uid)
+        player = game.get_current_player()
+
+        return jsonify(isError=False,
+                       message="SUCCESS",
+                       statusCode=200,
+                       data=player.player_id), 200
+
+
+    @staticmethod
     @app.route("/game/<game_id>", methods=["GET"])
     def get_game(game_id: str):
         game = Data.get_game(game_id)
