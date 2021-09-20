@@ -10,14 +10,25 @@ var app = new Vue({
         player_name: "",
         player_id: "",
         players: {},
-        game_state: false
+        game_state: false,
+        my_turn: false,
     },
+    computed: {},
     methods: {
         changeWebsite(newValue) {
             if (newValue === "Lobby") {
                 this.refresh()
             }
             this.website = newValue
+        },
+        is_current_player() {
+            this.my_turn = setInterval(() => {
+                if (this.player_id) {
+                    this.get_api("game", "currentPlayer", this.game_uid).then(response => {
+                        this.my_turn = response["data"] === this.player_id
+                    })
+                }
+            }, 2000)
         },
         refresh() {
             this.get_players()
@@ -83,5 +94,8 @@ var app = new Vue({
                     return responseData
                 });
         }
+    },
+    created() {
+        this.is_current_player()
     }
 })

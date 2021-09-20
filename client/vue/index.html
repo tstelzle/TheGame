@@ -39,6 +39,7 @@
     </div>
     <div v-if="website==='Game'" id="Game">
         <h2>Game</h2>
+        <p v-if="my_turn">Your Turn!</p>
     </div>
 
     <button v-on:click="changeWebsite('ServerConnect')">Go To Connect</button>
