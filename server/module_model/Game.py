@@ -1,6 +1,7 @@
 from module_model.Player import Player
 from module_model.Pile import Pile
 from module_model.Deck import Deck
+from module_model.GameWin import GameWin
 
 
 class Game:
@@ -14,18 +15,26 @@ class Game:
         self.starting_cards = starting_cards
         self.current_player = 0
         self.state = False
+        self.cards_to_play = 2
+        self.cards_played = 0
+        self.win_state = GameWin.INGAME
 
     def get_current_player(self) -> Player:
         return self.players[self.current_player]
 
     def get_next_player(self) -> Player:
         self.current_player = (self.current_player + 1) % len(self.players)
-        return self.get_current_player()
+        return self.players[self.current_player]
+
+    def get_next_player_id(self) -> int:
+        self.current_player = (self.current_player + 1) % len(self.players)
+        return self.current_player
+
 
     @staticmethod
     def initialize_piles() -> [Pile]:
         pile_1_1 = Pile(1)
-        pile_1_2 = Pile(2)
+        pile_1_2 = Pile(1)
         pile_100_1 = Pile(100)
         pile_100_2 = Pile(100)
 
@@ -62,4 +71,11 @@ class Game:
                 return player
 
         raise Exception("Player Not Found.")
+
+    def get_piles_topcard(self):
+        top_cards = []
+        for pile in self.piles:
+            top_cards.append(pile.top_card)
+
+        return top_cards
 

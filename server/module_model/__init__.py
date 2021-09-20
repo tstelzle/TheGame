@@ -3,3 +3,4 @@ from .Player import *
 from .Deck import *
 from .Pile import *
 from .Data import *
+from .GameWin import *

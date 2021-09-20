@@ -4,6 +4,6 @@ GAMES = []
 def get_game(game_id: str):
     for game in GAMES:
         if str(game["id"]) == game_id:
-            return game["game"]
+            return game["game"], True
 
-    raise Exception("Game Not Found")
+    return None, False
