@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <h1>The Game</h1>
+</head>
+<body>
+<div id="app">
+    <div v-if="website==='ServerConnect'" id="ServerConnect">
+        <h2>Server Connect</h2>
+        <input v-model="ip">
+        <input v-model="port">
+        <button v-on:click="changeWebsite('Setup')">Connect</button>
+    </div>
+    <div v-if="website==='Setup'" id="Setup">
+        <h2>Setup</h2>
+        <div>
+            <input v-model="game_name">
+            <button v-on:click="create_game">Add Game</button>
+        </div>
+        <div>
+            <input v-model="game_uid">
+            <button v-on:click="get_game">Get Game</button>
+        </div>
+    </div>
+    <div v-if="website==='PlayerSetup'" id="PlayerSetup">
+        <h2>Player Setup</h2>
+        <input v-model="player_name">
+        <button v-on:click="add_player">Add Player</button>
+    </div>
+    <div v-if="website==='Lobby'" id="Lobby">
+        <h2>Lobby</h2>
+        <ul>
+            <li v-for="player in players">{{player}}</li>
+        </ul>
+        <button v-on:click="refresh">Refresh</button>
+        <button v-on:click="start_game">Start Game</button>
+    </div>
+    <div v-if="website==='Game'" id="Game">
+        <h2>Game</h2>
+    </div>
+
+    <button v-on:click="changeWebsite('ServerConnect')">Go To Connect</button>
+    <button v-on:click="changeWebsite('Setup')">Go To Setup</button>
+    <button v-on:click="changeWebsite('PlayerSetup')">Go To Player Setup</button>
+    <button v-on:click="changeWebsite('Lobby')">Go To Lobby</button>
+    <button v-on:click="changeWebsite('Game')">Go To Game</button>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>

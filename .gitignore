@@ -1,4 +1,4 @@
 .idea
 **/__pycache__/
-/client/build/
-/client/client.spec
+/client/python/client.spec
+/client/python/build/
