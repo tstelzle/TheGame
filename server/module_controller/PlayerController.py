@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource
 
 from module_model import Data, Game, Player
@@ -21,4 +22,7 @@ class PlayerController(Resource):
 
         searched_game.add_player(player)
 
-        return player.name + "; " + str(player.player_id), 201
+        return jsonify(isError=False,
+                       message="CREATED",
+                       statusCode=201,
+                       data=str(player.player_id)), 201

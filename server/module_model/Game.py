@@ -13,6 +13,7 @@ class Game:
         self.deck = self.create_deck()
         self.starting_cards = starting_cards
         self.current_player = 0
+        self.state = False
 
     def get_current_player(self) -> Player:
         return self.players[self.current_player]
