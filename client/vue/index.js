@@ -1,4 +1,9 @@
-var app = new Vue({
+// register modal component
+Vue.component("modal", {
+    template: "#modal-template"
+});
+
+new Vue({
     el: '#app',
     data: {
         ip: "localhost",
@@ -17,7 +22,8 @@ var app = new Vue({
         topcards: [],
         selected_card: "",
         selected_pile: "",
-        cards_in_deck: 0
+        cards_in_deck: 0,
+        show_instructions: false,
     },
     computed: {},
     methods: {
@@ -45,7 +51,8 @@ var app = new Vue({
                 topcards: [],
                 selected_card: "",
                 selected_pile: "",
-                cards_in_deck: 0
+                cards_in_deck: 0,
+                show_instructions: false,
             }
         },
         select_pile(pile) {

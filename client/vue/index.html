@@ -4,10 +4,49 @@
     <title>The Game</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <h1>The Game</h1>
+
+    <!-- Template Instructions -->
+    <script type="text/x-template" id="modal-template">
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+                        <div>
+                            <h3 class="instructions-header">Instructions</h3>
+                        </div>
+                        <div >
+                            <p>Players in <em><strong>The Game</strong></em> try to discard all 98 cards in the deck onto four discard piles in order to win, but they need to do so in the right ways.</p>
+                            <p>Each player starts with 6-8 cards in their hand depending on the number of players, and four discard pile prompt cards are on the table: two showing "1" and an up arrow and two showing "100" and a down arrow. On a turn, a player must discard at least two cards from their hand onto one or more discard piles, with cards on the 1 piles being placed in ascending order and cards on the 100 piles being placed in descending order. One tricky aspect of the game is that you can play a card exactly 10 higher/lower than the top card of a discard pile even when you would normally have to play in a descending/ascending order, e.g., if a 100 discard pile is topped with an 87, you can play any card lower than 87 or you can play the 97.</p>
+                            <p>After a player finishes their turn, they refill their hand from the deck. During play, players cannot reveal exact numbers in their hands, but they can warn others not to play on certain discard piles or otherwise make play suggestions.</p>
+                            <p>Once the deck is emptied, players are required only to play at least one card on a turn. If you play all 98 cards, you win! If you get good, the rules suggest that you play at least three cards a turn to increase the challenge.</p>
+                        </div>
+                        <div>
+                            <a href="#" onClick="window.open('https://boardgamegeek.com/boardgame/173090/game', '_blank')">Source</a>
+                        </div>
+                        <div class="container-center">
+                            <button class="button-small" @click="$emit('close')">
+                                OK
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </script>
 </head>
+
+<!-- APP -->
 <body>
 <div id="app">
+    <div class="container-row">
+        <div>
+            <h1>The Game</h1>
+        </div>
+        <div>
+            <button @click="show_instructions = true" class="button">Instructions</button>
+            <modal v-if="show_instructions" @close="show_instructions = false"></modal>
+        </div>
+    </div>
     <div class="container" v-if="website==='ServerConnect'" id="ServerConnect">
         <div class="box">
             <h2>Server Connect</h2>
@@ -79,9 +118,9 @@
         </div>
         <div class="container-row">
             <button class="button pile" v-for="(pile_card, index) in topcards" v-bind:class="{'button-selected' : isPileOrange(index)}" v-on:click="select_pile(index)">
-                Pile: {{index+1}}<br>
-                {{get_pile_direction(index)}}<br>
-                Card: {{pile_card}}
+                <span>Pile: {{index+1}}</span><br>
+                <span>{{get_pile_direction(index)}}</span><br>
+                <span class="bold">Card: {{pile_card}}</span>
             </button>
         </div>
         <div class="container-row">
@@ -108,9 +147,9 @@
         <button class="button button-footer" v-on:click="changeWebsite('Game')">Go To Game</button>
     </div>
     <div class="footer container" v-else-if="game_state === 'in_game'">
-        <span class="text">Name: {{player_name}}</span>
-        <span class="text">Player ID: {{player_id}}</span>
-        <span class="text">Game ID: {{game_uid}}</span>
+        <span class="text smaller-font">Name: {{player_name}}</span>
+        <span class="text smaller-font">Player ID: {{player_id}}</span>
+        <span class="text smaller-font">Game ID: {{game_uid}}</span>
     </div>
 </div>
 
