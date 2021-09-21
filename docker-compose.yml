@@ -1,0 +1,20 @@
+services:
+  thegame:
+    image: nginx
+    container_name: thegame
+    volumes:
+      - ./client/vue/:/usr/share/nginx/html
+    ports:
+      - "9200:80"
+    environment:
+      - NGINX_PORT=80
+    depends_on:
+      - thegame-api
+
+  thegame-api:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    container_name: thegame-api
+    ports:
+      - "9201:5050"
