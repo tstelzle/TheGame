@@ -3,87 +3,114 @@
 <head>
     <title>The Game</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <h1>The Game</h1>
 </head>
 <body>
 <div id="app">
-    <div v-if="website==='ServerConnect'" id="ServerConnect">
-        <h2>Server Connect</h2>
-        <input v-model="ip">
-        <input v-model="port">
-        <button v-on:click="changeWebsite('Setup')">Connect</button>
+    <div class="container" v-if="website==='ServerConnect'" id="ServerConnect">
+        <div class="box">
+            <h2>Server Connect</h2>
+        </div>
+        <div class="box">
+            <input v-model="ip">
+            <input v-model="port">
+        </div>
+        <div class="box">
+            <button class="button" v-on:click="changeWebsite('Setup')">Connect</button>
+        </div>
     </div>
-    <div v-if="website==='Setup'" id="Setup">
-        <h2>Setup</h2>
-        <div>
+    <div class="container" v-if="website==='Setup'" id="Setup">
+        <div class="box">
+            <h2>Setup</h2>
+        </div>
+        <div class="box">
             <input v-model="game_name">
-            <button v-on:click="create_game">Add Game</button>
+            <button class="button" v-on:click="create_game">Add Game</button>
         </div>
-        <div>
+        <div class="box">
             <input v-model="game_uid">
-            <button v-on:click="get_game">Get Game</button>
+            <button class="button" v-on:click="get_game">Get Game</button>
         </div>
     </div>
-    <div v-if="website==='PlayerSetup'" id="PlayerSetup">
-        <h2>Player Setup</h2>
-        <p>{{game_uid}}</p>
+    <div class="container" v-if="website==='PlayerSetup'" id="PlayerSetup">
+        <div>
+            <h2>Player Setup</h2>
+        </div>
+        <div>
+            <p>Game ID: {{game_uid}}</p>
+        </div>
         <div>
             <input v-model="player_name">
-            <button v-on:click="add_player">Add Player</button>
+            <button class="button" v-on:click="add_player">Add Player</button>
         </div>
         <div>
             <input v-model="possible_player_id">
-            <button v-on:click="restore_player">Restore Player</button>
+            <button class="button" v-on:click="restore_player">Restore Player</button>
         </div>
     </div>
-    <div v-if="website==='Lobby'" id="Lobby">
+    <div class="container" v-if="website==='Lobby'" id="Lobby">
         <h2>Lobby</h2>
-        <p>{{player_id}}</p>
+        <div>
+            <p>Game ID: {{game_uid}}</p>
+        </div>
         <ul>
             <li v-for="player in players">{{player}}</li>
         </ul>
-        <button v-on:click="refresh">Refresh</button>
-        <button v-on:click="start_game">Start Game</button>
+        <button class="button" v-on:click="start_game">Start Game</button>
     </div>
-    <div v-if="website==='Game'" id="Game">
-        <h2>Game</h2>
-        {{player_id}}
-        <p v-if="my_turn">Your Turn!</p>
-        <div v-for="(pile_card, index) in topcards">
-            <p>Pile: {{index+1}}; {{get_pile_direction(index)}}</p>
-            <p>Card: {{pile_card}}</p>
+    <div class="container" v-if="website==='Game'" id="Game">
+        <div class="box">
+            <h2>Game</h2>
         </div>
-        <ol>
-            <li v-for="card in handcards">{{card}}</li>
-        </ol>
 
-        <select v-model="selected_card">
-            <option  v-for="card in handcards">{{card}}</option>
-        </select>
+        <div>
+            <span  class="text" v-for="(player, index) in players" v-bind:class="{ 'bold' : index === current_player }">{{player}}</span>
+        </div>
 
-        <select v-model="selected_pile">
-            <option  v-for="(pile_card, index) in topcards">{{index+1}}</option>
-        </select>
+        <div>
+            <p>Remaining Cards: {{cards_in_deck}}</p>
+        </div>
 
-        <button v-on:click="play_card">Play</button>
-        <button v-on:click="end_turn">End Turn</button>
-        <button v-on:click="surrender">Surrender</button>
+        <div class="container-row">
+            <button class="button" v-on:click="play_card">Play</button>
+            <button class="button" v-on:click="end_turn">End Turn</button>
+            <button class="button" v-on:click="surrender">Surrender</button>
+        </div>
+        <div class="container-row">
+            <button class="button pile" v-for="(pile_card, index) in topcards" v-bind:class="{'button-selected' : isPileOrange(index)}" v-on:click="select_pile(index)">
+                Pile: {{index+1}}<br>
+                {{get_pile_direction(index)}}<br>
+                Card: {{pile_card}}
+            </button>
+        </div>
+        <div class="container-row">
+            <button class="button" v-for="card in handcards" v-bind:class="{'button-selected' : isButtonOrange(card)}" v-on:click="select_handcard(card)">{{card}}</button>
+        </div>
+        <div class="box">
+            <p v-if="my_turn">Your Turn!</p>
+        </div>
     </div>
-    <div v-if="website==='Win'" id="Win">
+    <div class="container" v-if="website==='Win'" id="Win">
         <h2>You Won!</h2>
-        <button v-on:click="changeWebsite('Setup')">Go To Setup</button>
+        <button class="button" v-on:click="new_game()">New Game</button>
     </div>
-    <div v-if="website==='Loss'" id="Loss">
+    <div class="container" v-if="website==='Loss'" id="Loss">
         <h2>You Lost!</h2>
-        <button v-on:click="changeWebsite('Setup')">Go To Setup</button>
+        <button class="button" v-on:click="new_game()">New Game</button>
     </div>
 
-    <div>
-        <button v-on:click="changeWebsite('ServerConnect')">Go To Connect</button>
-        <button v-on:click="changeWebsite('Setup')">Go To Setup</button>
-        <button v-on:click="changeWebsite('PlayerSetup')">Go To Player Setup</button>
-        <button v-on:click="changeWebsite('Lobby')">Go To Lobby</button>
-        <button v-on:click="changeWebsite('Game')">Go To Game</button>
+    <div class="footer container" v-if="game_state === 'init'">
+        <button class="button button-footer" v-on:click="changeWebsite('ServerConnect')">Go To Connect</button>
+        <button class="button button-footer" v-on:click="changeWebsite('Setup')">Go To Setup</button>
+        <button class="button button-footer" v-on:click="changeWebsite('PlayerSetup')">Go To Player Setup</button>
+        <button class="button button-footer" v-on:click="changeWebsite('Lobby')">Go To Lobby</button>
+        <button class="button button-footer" v-on:click="changeWebsite('Game')">Go To Game</button>
+    </div>
+    <div class="footer container" v-else-if="game_state === 'in_game'">
+        <span class="text">Name: {{player_name}}</span>
+        <span class="text">Player ID: {{player_id}}</span>
+        <span class="text">Game ID: {{game_uid}}</span>
     </div>
 </div>
 

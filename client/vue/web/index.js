@@ -9,17 +9,24 @@ var app = new Vue({
         player_name: "",
         player_id: "",
         possible_player_id: "",
-        players: {},
-        game_state: false,
+        players: [],
+        current_player: 0,
+        game_state: "init",
         my_turn: false,
-        handcards: {},
-        topcards: {},
+        handcards: [],
+        topcards: [],
         selected_card: "",
-        selected_pile: 0,
-        win_state: ""
+        selected_pile: "",
+        cards_in_deck: 0
     },
     computed: {},
     methods: {
+        isButtonOrange(card) {
+            return this.selected_card === card;
+        },
+        isPileOrange(pile) {
+            return this.selected_pile === pile
+        },
         initiale_state() {
             return {
                 ip: "localhost",
@@ -30,15 +37,22 @@ var app = new Vue({
                 player_name: "",
                 player_id: "",
                 possible_player_id: "",
-                players: {},
-                game_state: false,
+                players: [],
+                current_player: 0,
+                game_state: "init",
                 my_turn: false,
-                handcards: {},
-                topcards: {},
+                handcards: [],
+                topcards: [],
                 selected_card: "",
-                selected_pile: 0,
-                win_state: ""
+                selected_pile: "",
+                cards_in_deck: 0
             }
+        },
+        select_pile(pile) {
+            this.selected_pile = pile
+        },
+        select_handcard(card) {
+            this.selected_card = card
         },
         get_pile_direction(id) {
             if (id === 0 || id === 1) {
@@ -46,13 +60,11 @@ var app = new Vue({
             }
             return "100 -> 1"
         },
+        new_game() {
+            Object.assign(this.$data, this.initiale_state());
+            this.website = "Setup"
+        },
         changeWebsite(newValue) {
-            if (newValue === "Lobby") {
-                this.refresh()
-            }
-            if (this.win_state === "loss" || this.win_state === "win") {
-                Object.assign(this.$data, this.initiale_state());
-            }
             this.website = newValue
         },
         is_current_player() {
@@ -64,14 +76,6 @@ var app = new Vue({
                 }
             }, 2000)
         },
-        refresh() {
-            this.get_players()
-            this.get_game_state().then(() => {
-                if (this.game_state === true) {
-                    this.changeWebsite("Game")
-                }
-            })
-        },
         add_player() {
             this.post_api("player", this.game_uid, this.player_name).then(response => {
                 this.player_id = response["data"]
@@ -79,20 +83,18 @@ var app = new Vue({
             })
         },
         get_players() {
-            this.get_api("players", this.game_uid).then(response => {
-                this.players = response["data"]
-            })
-        },
-        get_game_state() {
-            return this.get_api("game", "state", this.game_uid).then(response => {
-                    this.game_state = response["data"] === "True";
-                    return this.game_state
+            setInterval(() => {
+                if (this.game_uid) {
+                    this.get_api("players", this.game_uid).then(response => {
+                        this.players = response["data"][0]
+                        this.current_player = response["data"][1]
+                    })
                 }
-            )
+            }, 2000)
         },
         start_game() {
-            this.post_api("game", "state", this.game_uid).then(response => {
-                this.game_state = true
+            this.post_api("game", "state", this.game_uid, "in_game").then(response => {
+                // this.game_state = "in_game"
                 this.changeWebsite("Game")
             })
         },
@@ -111,7 +113,7 @@ var app = new Vue({
         },
         get_handcards() {
             setInterval(() => {
-                if (this.game_state === true) {
+                if (this.game_state === "in_game") {
                     this.get_api("player", this.game_uid, this.player_id).then(response => {
                         this.handcards = response["data"]
                     })
@@ -120,7 +122,7 @@ var app = new Vue({
         },
         get_topcards() {
             setInterval(() => {
-                if (this.game_state === true) {
+                if (this.game_state === "in_game") {
                     this.get_api("player", "piles", this.game_uid).then(response => {
                         this.topcards = response["data"]
                     })
@@ -131,22 +133,20 @@ var app = new Vue({
             this.get_api("player", "valid", this.game_uid, this.possible_player_id).then(response => {
                 if (response.isError === Boolean(false)) {
                     this.player_id = this.possible_player_id
-                    if (this.game_state === Boolean(true)) {
+                    if (this.game_state === "in_game") {
                         this.changeWebsite("Game")
-                    }
-                    else {
+                    } else {
                         this.changeWebsite("Lobby")
                     }
-                }
-                else {
+                } else {
                     window.alert("Player UID Does Not Exist.")
                 }
             })
         },
         play_card() {
-            this.post_api("game", this.game_uid, this.player_id, this.selected_pile-1, this.selected_card).then(response => {
+            this.post_api("game", this.game_uid, this.player_id, this.selected_pile, this.selected_card).then(response => {
                 if (response.isError === Boolean(false)) {
-                    this.handcards = this.handcards.filter(function(value, index, arr){
+                    this.handcards = this.handcards.filter(function (value, index, arr) {
                         return value !== this.selected_card;
                     });
                 }
@@ -159,17 +159,14 @@ var app = new Vue({
                 }
             })
         },
-        check_win() {
+        get_game_state() {
             setInterval(() => {
-                if (this.game_state === true) {
-                    this.get_api("game", "win", this.game_uid).then(response => {
-                        console.log(response["data"])
-                        console.log(typeof(response["data"]))
-                        this.win_state = response["data"]
-                        if (this.win_state === "loss") {
+                if (this.game_uid) {
+                    this.get_api("game", "state", this.game_uid).then(response => {
+                        this.game_state = response["data"]
+                        if (this.game_state === "loss") {
                             this.changeWebsite("Loss")
-                        }
-                        else if(this.win_state === "win") {
+                        } else if (this.game_state === "win") {
                             this.changeWebsite("Win")
                         }
                     })
@@ -177,7 +174,17 @@ var app = new Vue({
             }, 2000)
         },
         surrender() {
-            this.post_api("game", "win", this.game_uid, "loss")
+            // TODO Reset Values for stopping api calls
+            this.post_api("game", "state", this.game_uid, "loss")
+        },
+        update_deck_cards() {
+            setInterval(() => {
+                if (this.game_uid) {
+                    this.get_api("game", "deck", this.game_uid).then(response => {
+                        this.cards_in_deck = response["data"]
+                    })
+                }
+            }, 2000)
         },
         get_api() {
             let path = Array.from(arguments).join("/")
@@ -208,6 +215,8 @@ var app = new Vue({
         this.is_current_player()
         this.get_handcards()
         this.get_topcards()
-        this.check_win()
+        this.get_game_state()
+        this.update_deck_cards()
+        this.get_players()
     }
 })
