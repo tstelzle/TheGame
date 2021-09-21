@@ -1,10 +1,10 @@
 import uuid
 
+from app import app
 from flask import jsonify
 from flask_cors import cross_origin
 from flask_restful import Resource
-from module_model import Data, Game, GameWin
-from app import app
+from module_model import Data, Game, GameStatus
 
 
 class GameController(Resource):
@@ -19,7 +19,7 @@ class GameController(Resource):
                            message="ERROR",
                            statusCode=401,
                            data=""), 401
-        
+
         player = game.get_player(player_id)
 
         return jsonify(isError=False,
@@ -80,7 +80,7 @@ class GameController(Resource):
         return jsonify(isError=False,
                        message="SUCCESS",
                        statusCode=200,
-                       data=player_names), 200
+                       data=(player_names, game.current_player)), 200
 
     @staticmethod
     @app.route("/game/currentPlayer/<game_uid>", methods=["GET"])
@@ -114,40 +114,6 @@ class GameController(Resource):
                        message="CREATED",
                        statusCode=201,
                        data=str(game.name)), 201
-
-    @staticmethod
-    @app.route("/game/state/<game_uid>", methods=["GET"])
-    @cross_origin()
-    def game_state(game_uid: str):
-        game, game_status = Data.get_game(game_uid)
-        if not game_status:
-            return jsonify(isError=True,
-                           message="ERROR",
-                           statusCode=401,
-                           data=""), 401
-
-        return jsonify(isError=False,
-                       message="SUCCESS",
-                       statusCode=200,
-                       data=str(game.state))
-
-    @staticmethod
-    @app.route("/game/state/<game_uid>", methods=["POST"])
-    @cross_origin()
-    def set_state(game_uid: str):
-        game, game_status = Data.get_game(game_uid)
-        if not game_status:
-            return jsonify(isError=True,
-                           message="ERROR",
-                           statusCode=401,
-                           data=""), 401
-        game.state = True
-        game.start_game()
-
-        return jsonify(isError=False,
-                       message="CREATED",
-                       statusCode=201,
-                       data=str(game.state))
 
     @staticmethod
     @app.route("/game/<game_uid>/<player_id>/<pile_id>/<card>", methods=["POST"])
@@ -224,15 +190,17 @@ class GameController(Resource):
             else:
                 game.cards_to_play = 1
 
+        game.check_win()
+
         return jsonify(isError=False,
                        message="SUCCESS",
                        statusCode=200,
                        data=""), 200
 
     @staticmethod
-    @app.route("/game/win/<game_uid>", methods=["GET"])
+    @app.route("/game/state/<game_uid>", methods=["GET"])
     @cross_origin()
-    def get_game_win(game_uid: str):
+    def get_game_state(game_uid: str):
         game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
@@ -244,12 +212,12 @@ class GameController(Resource):
                        message="SUCCESS",
 
                        statusCode=200,
-                       data=game.win_state.value), 200
+                       data=game.state.value), 200
 
     @staticmethod
-    @app.route("/game/win/<game_uid>/<state>", methods=["POST"])
+    @app.route("/game/state/<game_uid>/<state>", methods=["POST"])
     @cross_origin()
-    def set_game_win(game_uid: str, state: str):
+    def set_game_state(game_uid: str, state: str):
         game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
@@ -257,17 +225,12 @@ class GameController(Resource):
                            statusCode=401,
                            data=""), 401
 
-        if state == GameWin.LOSS.value:
-            game.win_state = GameWin.LOSS
-            return jsonify(isError=False,
-                           message="SUCCESS",
-                           statusCode=200,
-                           data=""), 200
+        game.state = GameStatus(state)
 
-        return jsonify(isError=True,
-                       message="ERROR",
-                       statusCode=400,
-                       data=""), 400
+        return jsonify(isError=False,
+                       message="SUCCESS",
+                       statusCode=200,
+                       data=""), 200
 
     @staticmethod
     @app.route("/player/piles/<game_uid>", methods=["GET"])
@@ -285,3 +248,19 @@ class GameController(Resource):
                        message="SUCCESS",
                        statusCode=200,
                        data=top_cards), 200
+
+    @staticmethod
+    @app.route("/game/deck/<game_uid>", methods=["GET"])
+    @cross_origin()
+    def get_cards(game_uid: str):
+        game, game_status = Data.get_game(game_uid)
+        if not game_status:
+            return jsonify(isError=True,
+                           message="ERROR",
+                           statusCode=401,
+                           data=""), 401
+
+        return jsonify(isError=False,
+                       message="SUCCESS",
+                       statusCode=200,
+                       data=len(game.deck.cards)), 200

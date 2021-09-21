@@ -1,7 +1,7 @@
 from module_model.Player import Player
 from module_model.Pile import Pile
 from module_model.Deck import Deck
-from module_model.GameWin import GameWin
+from module_model.GameStatus import GameStatus
 
 
 class Game:
@@ -14,10 +14,9 @@ class Game:
         self.deck = self.create_deck()
         self.starting_cards = starting_cards
         self.current_player = 0
-        self.state = False
         self.cards_to_play = 2
         self.cards_played = 0
-        self.win_state = GameWin.INGAME
+        self.state = GameStatus.INITIALIZE
 
     def get_current_player(self) -> Player:
         return self.players[self.current_player]
@@ -57,11 +56,6 @@ class Game:
         new_card = self.deck.handout_card()
         player.add_card(new_card)
 
-    def start_game(self) -> None:
-        for player in self.players:
-            for card_counter in range(0, self.starting_cards):
-                self.handout_card(player)
-
     def get_pile(self, pile_id: int) -> Pile:
         return self.piles[pile_id]
 
@@ -79,3 +73,11 @@ class Game:
 
         return top_cards
 
+    def check_win(self):
+        if len(self.deck.cards) == 0:
+            amount_handcards = sum([len(player.hand_cards) for player in self.players])
+            if amount_handcards == 0:
+                self.win_state = GameStatus.WIN
+                return True
+
+        return False

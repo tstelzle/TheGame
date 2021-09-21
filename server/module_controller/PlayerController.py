@@ -18,6 +18,8 @@ class PlayerController(Resource):
                            statusCode=401,
                            data=""), 401
         game.add_player(player)
+        for i in range(game.starting_cards):
+            game.handout_card(player)
 
         return jsonify(isError=False,
                        message="CREATED",
