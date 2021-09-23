@@ -1,6 +1,6 @@
 # The Game
 
-This will be a python implementation of the board game "The Game".
+This will be a Python implementation of the board game "The Game".
 
 There is a server, which will manage various games via an API.
 
@@ -18,7 +18,7 @@ python3 server.py
 
 ### API
 
-The current API clas can be tested and run with the Postman collection.
+The current API class can be tested and run with the Postman collection.
 
 [Collection](./TheGame.postman_collection.json)
 
