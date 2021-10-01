@@ -98,36 +98,42 @@
         </ul>
         <button class="button" v-on:click="start_game">Start Game</button>
     </div>
-    <div class="container" v-if="website==='Game'" id="Game">
-        <div class="box">
-            <h2>Game</h2>
-        </div>
+    <div class="container-row" v-if="website==='Game'" id="Game">
 
-        <div>
-            <span  class="text" v-for="(player, index) in players" v-bind:class="{ 'bold' : index === current_player }">{{player}}</span>
+        <div class="game-log">
+            <p v-for="log in this.game_log">{{log}}</p>
         </div>
+        <div class="container" style="width: 50%">
+            <div class="box">
+                <h2>Game</h2>
+            </div>
 
-        <div>
-            <p>Remaining Cards: {{cards_in_deck}}</p>
-        </div>
+            <div>
+                <span  class="text" v-for="(player, index) in players" v-bind:class="{ 'bold' : index === current_player }">{{player}}</span>
+            </div>
 
-        <div class="container-row">
-            <button class="button" v-on:click="play_card">Play</button>
-            <button class="button" v-on:click="end_turn">End Turn</button>
-            <button class="button" v-on:click="surrender">Surrender</button>
-        </div>
-        <div class="container-row">
-            <button class="button pile" v-for="(pile_card, index) in topcards" v-bind:class="{'button-selected' : isPileOrange(index)}" v-on:click="select_pile(index)">
-                <span>Pile: {{index+1}}</span><br>
-                <span>{{get_pile_direction(index)}}</span><br>
-                <span class="bold">Card: {{pile_card}}</span>
-            </button>
-        </div>
-        <div class="container-row">
-            <button class="button" v-for="card in handcards" v-bind:class="{'button-selected' : isButtonOrange(card)}" v-on:click="select_handcard(card)">{{card}}</button>
-        </div>
-        <div class="box">
-            <p v-if="my_turn">Your Turn!</p>
+            <div>
+                <p>Remaining Cards: {{cards_in_deck}}</p>
+            </div>
+
+            <div class="container-row">
+                <button class="button" v-on:click="play_card">Play</button>
+                <button class="button" v-on:click="end_turn">End Turn</button>
+                <button class="button" v-on:click="surrender">Surrender</button>
+            </div>
+            <div class="container-row">
+                <button class="button pile" v-for="(pile_card, index) in topcards" v-bind:class="{'button-selected' : isPileOrange(index)}" v-on:click="select_pile(index)">
+                    <span>Pile: {{index+1}}</span><br>
+                    <span>{{get_pile_direction(index)}}</span><br>
+                    <span class="bold">Card: {{pile_card}}</span>
+                </button>
+            </div>
+            <div class="container-row">
+                <button class="button" v-for="card in handcards" v-bind:class="{'button-selected' : isButtonOrange(card)}" v-on:click="select_handcard(card)">{{card}}</button>
+            </div>
+            <div class="box">
+                <p v-if="my_turn">Your Turn!</p>
+            </div>
         </div>
     </div>
     <div class="container" v-if="website==='Win'" id="Win">

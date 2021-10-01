@@ -154,10 +154,13 @@ class GameController(Resource):
             player.hand_cards.remove(card)
             pile.top_card = card
             game.cards_played += 1
+            game.add_right_to_log(player.name, card, pile_id)
             return jsonify(isError=False,
                            message="SUCCESS",
                            statusCode=200,
                            data=pile.top_card), 200
+
+        game.add_wrong_to_log(player.name, card, pile_id)
 
         return jsonify(isError=True,
                        message="ERROR",
@@ -264,3 +267,21 @@ class GameController(Resource):
                        message="SUCCESS",
                        statusCode=200,
                        data=len(game.deck.cards)), 200
+
+    @staticmethod
+    @app.route("/game/log/<game_id>/<since>", methods=["GET"])
+    def get_game_log(game_id: int, since: int):
+        game, game_status = Data.get_game(game_id)
+        if not game_status:
+            return jsonify(isError=True,
+                           message="ERROR",
+                           statusCode=401,
+                           data=""), 401
+
+        new_game_log = game.log[int(since):]
+        new_game_log_string = ";".join(new_game_log)
+
+        return jsonify(isError=False,
+                       message="SUCCESS",
+                       statusCode=200,
+                       data=new_game_log_string), 200

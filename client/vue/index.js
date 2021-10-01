@@ -24,6 +24,7 @@ new Vue({
         selected_pile: "",
         cards_in_deck: 0,
         show_instructions: false,
+        game_log: [],
     },
     computed: {},
     methods: {
@@ -53,7 +54,21 @@ new Vue({
                 selected_pile: "",
                 cards_in_deck: 0,
                 show_instructions: false,
+                game_log: [],
             }
+        },
+        get_game_log() {
+            setInterval(() => {
+                if (this.game_uid) {
+                    console.log(this.game_log)
+                    this.get_api("game", "log", this.game_uid, this.game_log.length).then(response => {
+                        console.log(response.data)
+                        if (response.data !== "") {
+                            this.game_log = this.game_log.concat(response.data.split(";"))
+                        }
+                    })
+                }
+            }, 2000)
         },
         select_pile(pile) {
             this.selected_pile = pile
@@ -225,5 +240,6 @@ new Vue({
         this.get_game_state()
         this.update_deck_cards()
         this.get_players()
+        this.get_game_log()
     }
 })

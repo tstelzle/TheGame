@@ -17,6 +17,15 @@ class Game:
         self.cards_to_play = 2
         self.cards_played = 0
         self.state = GameStatus.INITIALIZE
+        self.log = []
+
+    def add_wrong_to_log(self, player_name: str, player_card: int, pile: int) -> None:
+        pile += 1
+        self.log.append(player_name + " tried to put " + str(player_card) + " on pile " + str(pile) + "...")
+
+    def add_right_to_log(self, player_name: str, player_card: int, pile: int) -> None:
+        pile += 1
+        self.log.append(player_name + " put " + str(player_card) + " on  pile " + str(pile) + ".")
 
     def get_current_player(self) -> Player:
         return self.players[self.current_player]

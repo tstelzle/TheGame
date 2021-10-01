@@ -43,6 +43,12 @@
 .container-row {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+}
+
+.container-row {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
@@ -85,6 +91,10 @@
 .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
+}
+
+.game-log {
+    width: 25%;
 }
 
 .modal-container {
