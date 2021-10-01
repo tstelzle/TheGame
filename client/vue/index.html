@@ -1,212 +1,161 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>The Game</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css">
 
     <!-- Template Instructions -->
     <script type="text/x-template" id="modal-template">
-      <transition name="modal">
-          <div class="modal-mask">
-              <div class="modal-wrapper">
-                  <div class="modal-container">
-                      <div>
-                          <h3 class="instructions-header">Instructions</h3>
-                      </div>
-                      <div >
-                          <p>Players in <em><strong>The Game</strong></em> try to discard all 98 cards in the deck onto four discard piles in order to win, but they need to do so in the right ways.</p>
-                          <p>Each player starts with 6-8 cards in their hand depending on the number of players, and four discard pile prompt cards are on the table: two showing "1" and an up arrow and two showing "100" and a down arrow. On a turn, a player must discard at least two cards from their hand onto one or more discard piles, with cards on the 1 piles being placed in ascending order and cards on the 100 piles being placed in descending order. One tricky aspect of the game is that you can play a card exactly 10 higher/lower than the top card of a discard pile even when you would normally have to play in a descending/ascending order, e.g., if a 100 discard pile is topped with an 87, you can play any card lower than 87 or you can play the 97.</p>
-                          <p>After a player finishes their turn, they refill their hand from the deck. During play, players cannot reveal exact numbers in their hands, but they can warn others not to play on certain discard piles or otherwise make play suggestions.</p>
-                          <p>Once the deck is emptied, players are required only to play at least one card on a turn. If you play all 98 cards, you win! If you get good, the rules suggest that you play at least three cards a turn to increase the challenge.</p>
-                      </div>
-                      <div>
-                          <a href="#" onClick="window.open('https://boardgamegeek.com/boardgame/173090/game', '_blank')">Source</a>
-                      </div>
-                      <div class="container-center">
-                          <button class="button-small" @click="$emit('close')">
-                              OK
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </transition>
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+                        <div>
+                            <h3 class="instructions-header">Instructions</h3>
+                        </div>
+                        <div >
+                            <p>Players in <em><strong>The Game</strong></em> try to discard all 98 cards in the deck onto four discard piles in order to win, but they need to do so in the right ways.</p>
+                            <p>Each player starts with 6-8 cards in their hand depending on the number of players, and four discard pile prompt cards are on the table: two showing "1" and an up arrow and two showing "100" and a down arrow. On a turn, a player must discard at least two cards from their hand onto one or more discard piles, with cards on the 1 piles being placed in ascending order and cards on the 100 piles being placed in descending order. One tricky aspect of the game is that you can play a card exactly 10 higher/lower than the top card of a discard pile even when you would normally have to play in a descending/ascending order, e.g., if a 100 discard pile is topped with an 87, you can play any card lower than 87 or you can play the 97.</p>
+                            <p>After a player finishes their turn, they refill their hand from the deck. During play, players cannot reveal exact numbers in their hands, but they can warn others not to play on certain discard piles or otherwise make play suggestions.</p>
+                            <p>Once the deck is emptied, players are required only to play at least one card on a turn. If you play all 98 cards, you win! If you get good, the rules suggest that you play at least three cards a turn to increase the challenge.</p>
+                        </div>
+                        <div>
+                            <a href="#" onClick="window.open('https://boardgamegeek.com/boardgame/173090/game', '_blank')">Source</a>
+                        </div>
+                        <div class="container-center">
+                            <button class="button-small" @click="$emit('close')">
+                                OK
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </script>
-  </head>
+</head>
 
-  <!-- APP -->
-  <body>
-    <div id="app">
-      <div class="container-row">
+<!-- APP -->
+<body>
+<div id="app">
+    <div class="container-row">
         <div>
-          <h1>The Game</h1>
-        </div>
-        <div>
-          <button @click="show_instructions = true" class="button">
-            Instructions
-          </button>
-          <modal
-            v-if="show_instructions"
-            @close="show_instructions = false"
-          ></modal>
-        </div>
-      </div>
-      <div
-        class="container"
-        v-if="website==='ServerConnect'"
-        id="ServerConnect"
-      >
-        <div class="box">
-          <h2>Server Connect</h2>
-        </div>
-        <div class="box">
-          <input v-model="ip" />
-          <input v-model="port" />
-        </div>
-        <div class="box">
-          <button class="button" v-on:click="changeWebsite('Setup')">
-            Connect
-          </button>
-        </div>
-      </div>
-      <div class="container" v-if="website==='Setup'" id="Setup">
-        <div class="box">
-          <h2>Setup</h2>
-        </div>
-        <div class="box">
-          <label for="Name">
-            <input v-model="game_name" />
-          </label>
-          <button class="button" v-on:click="create_game">Create Game</button>
-        </div>
-        <div class="box">
-          <label for="Game ID"><input v-model="game_uid" /> </label>
-          <button class="button" v-on:click="get_game">Join Game</button>
-        </div>
-      </div>
-      <div class="container" v-if="website==='PlayerSetup'" id="PlayerSetup">
-        <div>
-          <h2>Player Setup</h2>
+            <h1>The Game</h1>
         </div>
         <div>
-          <p>Game ID: {{game_uid}}</p>
+            <button @click="show_instructions = true" class="button">Instructions</button>
+            <modal v-if="show_instructions" @close="show_instructions = false"></modal>
+        </div>
+    </div>
+    <div class="container" v-if="website==='ServerConnect'" id="ServerConnect">
+        <div class="box">
+            <h2>Server Connect</h2>
+        </div>
+        <div class="box">
+            <input v-model="ip">
+            <input v-model="port">
+        </div>
+        <div class="box">
+            <button class="button" v-on:click="changeWebsite('Setup')">Connect</button>
+        </div>
+    </div>
+    <div class="container" v-if="website==='Setup'" id="Setup">
+        <div class="box">
+            <h2>Setup</h2>
+        </div>
+        <div class="box">
+          <label>Name</label>
+            <input v-model="game_name">
+            <button class="button" v-on:click="create_game">Create Game</button>
+        </div>
+        <div class="box">
+          <label for="Game_ID">Game ID</label> 
+             <input v-model="game_uid">
+    
+            <button class="button" v-on:click="get_game">Join Game</button>
+        </div>
+    </div>
+    <div class="container" v-if="website==='PlayerSetup'" id="PlayerSetup">
+        <div>
+            <h2>Player Setup</h2>
         </div>
         <div>
-          <input v-model="player_name" />
-          <button class="button" v-on:click="add_player">Add Player</button>
+            <p>Game ID: {{game_uid}}</p>
         </div>
         <div>
-          <input v-model="possible_player_id" />
-          <button class="button" v-on:click="restore_player">
-            Restore Player
-          </button>
+            <input v-model="player_name">
+            <button class="button" v-on:click="add_player">Add Player</button>
         </div>
-      </div>
-      <div class="container" v-if="website==='Lobby'" id="Lobby">
+        <div>
+            <input v-model="possible_player_id">
+            <button class="button" v-on:click="restore_player">Restore Player</button>
+        </div>
+    </div>
+    <div class="container" v-if="website==='Lobby'" id="Lobby">
         <h2>Lobby</h2>
         <div>
-          <p>Game ID: {{game_uid}}</p>
+            <p>Game ID: {{game_uid}}</p>
         </div>
         <ul>
-          <li v-for="player in players">{{player}}</li>
+            <li v-for="player in players">{{player}}</li>
         </ul>
         <button class="button" v-on:click="start_game">Start Game</button>
-      </div>
-      <div class="container" v-if="website==='Game'" id="Game">
+    </div>
+    <div class="container" v-if="website==='Game'" id="Game">
         <div class="box">
-          <h2>Game</h2>
+            <h2>Game</h2>
         </div>
 
         <div>
-          <span
-            class="text"
-            v-for="(player, index) in players"
-            v-bind:class="{ 'bold' : index === current_player }"
-            >{{player}}</span
-          >
+            <span  class="text" v-for="(player, index) in players" v-bind:class="{ 'bold' : index === current_player }">{{player}}</span>
         </div>
 
         <div>
-          <p>Remaining Cards: {{cards_in_deck}}</p>
+            <p>Remaining Cards: {{cards_in_deck}}</p>
         </div>
 
         <div class="container-row">
-          <button class="button" v-on:click="play_card">Play</button>
-          <button class="button" v-on:click="end_turn">End Turn</button>
-          <button class="button" v-on:click="surrender">Surrender</button>
+            <button class="button" v-on:click="play_card">Play</button>
+            <button class="button" v-on:click="end_turn">End Turn</button>
+            <button class="button" v-on:click="surrender">Surrender</button>
         </div>
         <div class="container-row">
-          <button
-            class="button pile"
-            v-for="(pile_card, index) in topcards"
-            v-bind:class="{'button-selected' : isPileOrange(index)}"
-            v-on:click="select_pile(index)"
-          >
-            <span>Pile: {{index+1}}</span><br />
-            <span>{{get_pile_direction(index)}}</span><br />
-            <span class="bold">Card: {{pile_card}}</span>
-          </button>
+            <button class="button pile" v-for="(pile_card, index) in topcards" v-bind:class="{'button-selected' : isPileOrange(index)}" v-on:click="select_pile(index)">
+                <span>Pile: {{index+1}}</span><br>
+                <span>{{get_pile_direction(index)}}</span><br>
+                <span class="bold">Card: {{pile_card}}</span>
+            </button>
         </div>
         <div class="container-row">
-          <button
-            class="button"
-            v-for="card in handcards"
-            v-bind:class="{'button-selected' : isButtonOrange(card)}"
-            v-on:click="select_handcard(card)"
-          >
-            {{card}}
-          </button>
+            <button class="button" v-for="card in handcards" v-bind:class="{'button-selected' : isButtonOrange(card)}" v-on:click="select_handcard(card)">{{card}}</button>
         </div>
         <div class="box">
-          <p v-if="my_turn">Your Turn!</p>
+            <p v-if="my_turn">Your Turn!</p>
         </div>
-      </div>
-      <div class="container" v-if="website==='Win'" id="Win">
+    </div>
+    <div class="container" v-if="website==='Win'" id="Win">
         <h2>You Won!</h2>
         <button class="button" v-on:click="new_game()">New Game</button>
-      </div>
-      <div class="container" v-if="website==='Loss'" id="Loss">
+    </div>
+    <div class="container" v-if="website==='Loss'" id="Loss">
         <h2>You Lost!</h2>
         <button class="button" v-on:click="new_game()">New Game</button>
-      </div>
+    </div>
 
-      <div class="footer container" v-if="game_state === 'init'">
-        <button
-          class="button button-footer"
-          v-on:click="changeWebsite('ServerConnect')"
-        >
-          Go To Connect
-        </button>
-        <button
-          class="button button-footer"
-          v-on:click="changeWebsite('Setup')"
-        >
-          Go To Setup
-        </button>
-        <button
-          class="button button-footer"
-          v-on:click="changeWebsite('PlayerSetup')"
-        >
-          Go To Player Setup
-        </button>
-        <button
-          class="button button-footer"
-          v-on:click="changeWebsite('Lobby')"
-        >
-          Go To Lobby
-        </button>
-        <button class="button button-footer" v-on:click="changeWebsite('Game')">
-          Go To Game
-        </button>
-      </div>
-      <div class="footer container" v-else-if="game_state === 'in_game'">
+    <div class="footer container" v-if="game_state === 'init'">
+        <button class="button button-footer" v-on:click="changeWebsite('ServerConnect')">Go To Connect</button>
+        <button class="button button-footer" v-on:click="changeWebsite('Setup')">Go To Setup</button>
+        <button class="button button-footer" v-on:click="changeWebsite('PlayerSetup')">Go To Player Setup</button>
+        <button class="button button-footer" v-on:click="changeWebsite('Lobby')">Go To Lobby</button>
+        <button class="button button-footer" v-on:click="changeWebsite('Game')">Go To Game</button>
+    </div>
+    <div class="footer container" v-else-if="game_state === 'in_game'">
         <span class="text smaller-font">Name: {{player_name}}</span>
         <span class="text smaller-font">Player ID: {{player_id}}</span>
         <span class="text smaller-font">Game ID: {{game_uid}}</span>
-      </div>
     </div>
+</div>
 
-    <script src="index.js"></script>
-  </body>
+<script src="index.js"></script>
+</body>
 </html>
