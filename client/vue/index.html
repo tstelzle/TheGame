@@ -64,12 +64,15 @@
             <h2>Setup</h2>
         </div>
         <div class="box">
+          <label>Name</label>
             <input v-model="game_name">
-            <button class="button" v-on:click="create_game">Add Game</button>
+            <button class="button" v-on:click="create_game">Create Game</button>
         </div>
         <div class="box">
-            <input v-model="game_uid">
-            <button class="button" v-on:click="get_game">Get Game</button>
+          <label>Game ID</label> 
+             <input v-model="game_uid">
+    
+            <button class="button" v-on:click="get_game">Join Game</button>
         </div>
     </div>
     <div class="container" v-if="website==='PlayerSetup'" id="PlayerSetup">
