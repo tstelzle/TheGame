@@ -25,6 +25,8 @@ new Vue({
         cards_in_deck: 0,
         show_instructions: false,
         game_log: [],
+        show_log: false,
+        show_chat: false,
     },
     computed: {},
     methods: {

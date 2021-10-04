@@ -99,11 +99,18 @@
         <button class="button" v-on:click="start_game">Start Game</button>
     </div>
     <div class="container-row" v-if="website==='Game'" id="Game">
-
-        <div class="game-log">
-            <p v-for="log in this.game_log">{{log}}</p>
+        <div>
+            <div class="log-container">
+                <div class="sidepane-button-left">
+                    <button class="sidepane-button" v-on:click="show_log = !show_log">Log</button>
+                </div>
+                <div class="log-text-box" v-if="show_log">
+                    <p style="text-align: center;">Game Log</p>
+                    <p v-for="log in this.game_log">{{log}}</p>
+                </div>
+            </div>
         </div>
-        <div class="container" style="width: 50%">
+        <div class="container">
             <div class="box">
                 <h2>Game</h2>
             </div>
@@ -133,6 +140,16 @@
             </div>
             <div class="box">
                 <p v-if="my_turn">Your Turn!</p>
+            </div>
+        </div>
+        <div>
+            <div class="chat-container">
+                <div class="sidepane-button-right">
+                    <button class="sidepane-button" v-on:click="show_chat = !show_chat">Chat</button>
+                </div>
+                <div class="chat-text-box" v-if="show_chat">
+                    <p style="text-align: center;">Game Chat</p>
+                </div>
             </div>
         </div>
     </div>

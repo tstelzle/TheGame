@@ -38,12 +38,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.container-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-basis: 70%;
+    flex-grow: 2;
+    height: 75vh;
 }
 
 .container-row {
@@ -93,8 +90,52 @@
     vertical-align: middle;
 }
 
-.game-log {
-    width: 25%;
+.sidepane {
+    position: relative;
+}
+
+.log-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 10;
+    position: absolute;
+    width: 40%;
+}
+
+.sidepane-button-left {
+    text-align: left;
+}
+
+.sidepane-button-right {
+    text-align: right;
+    top: 0;
+    right: 0;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 10;
+    position: relative;
+    width: 40%;
+}
+
+.log-text-box {
+    border: 1px solid black;
+    background: white;
+}
+
+.chat-text-box {
+    border: 1px solid black;
+    background: white;
+    top: 0;
+    right: 0;
+}
+
+.sidepane-button {
+    margin-bottom: 10px;
 }
 
 .modal-container {
