@@ -40,11 +40,29 @@
     align-items: center;
 }
 
+.card {
+    height: 200px;
+    width: 100px;
+    margin: 5px;
+    box-sizing: border-box;
+}
+
+.card-selected {
+    border: 3px solid orange;
+    border-radius: 12px;
+}
+
 .container-row {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+.topcards {
+    border: 2px solid grey;
+    border-radius: 12px;
+    margin: 5px;
 }
 
 .pile {

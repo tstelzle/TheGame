@@ -120,14 +120,18 @@
             <button class="button" v-on:click="surrender">Surrender</button>
         </div>
         <div class="container-row">
-            <button class="button pile" v-for="(pile_card, index) in topcards" v-bind:class="{'button-selected' : isPileOrange(index)}" v-on:click="select_pile(index)">
-                <span>Pile: {{index+1}}</span><br>
-                <span>{{get_pile_direction(index)}}</span><br>
-                <span class="bold">Card: {{pile_card}}</span>
-            </button>
+            <div class="topcards">
+                <img class="card" :src="'static/cards/card_' + this.topcards[0] + '.png'" v-bind:class="{'card-selected' : isPileOrange(0)}" v-on:click="select_pile(0)">
+                <img class="card" src="static/arrows/arrow_up.jpg">
+                <img class="card" :src="'static/cards/card_' + this.topcards[1] + '.png'" v-bind:class="{'card-selected' : isPileOrange(1)}" v-on:click="select_pile(1)">
+            </div>
+            <div class="topcards">
+                <img class="card" :src="'static/cards/card_' + this.topcards[2] + '.png'" v-bind:class="{'card-selected' : isPileOrange(2)}" v-on:click="select_pile(2)">
+                <img class="card" src="static/arrows/arrow_down.jpg">
+                <img class="card" :src="'static/cards/card_' + this.topcards[3] + '.png'" v-bind:class="{'card-selected' : isPileOrange(3)}" v-on:click="select_pile(3)">            </div>
         </div>
         <div class="container-row">
-            <button class="button" v-for="card in handcards" v-bind:class="{'button-selected' : isButtonOrange(card)}" v-on:click="select_handcard(card)">{{card}}</button>
+            <img class="card" v-for="card in handcards" :src="'static/cards/card_' + card + '.png'" v-on:click="select_handcard(card)" v-bind:class="{'card-selected' : isButtonOrange(card)}">
         </div>
         <div class="box">
             <p v-if="my_turn">Your Turn!</p>

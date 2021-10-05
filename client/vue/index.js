@@ -122,7 +122,8 @@ new Vue({
             setInterval(() => {
                 if (this.game_state === "in_game") {
                     this.get_api("player", this.game_uid, this.player_id).then(response => {
-                        this.handcards = response["data"]
+                        console.log(response["data"])
+                        this.handcards = response["data"].map(Number).sort(function (a, b) {  return a - b;  })
                     })
                 }
             }, 2000)
