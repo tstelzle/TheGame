@@ -62,9 +62,7 @@ new Vue({
         get_game_log() {
             setInterval(() => {
                 if (this.game_uid) {
-                    console.log(this.game_log)
                     this.get_api("game", "log", this.game_uid, this.game_log.length).then(response => {
-                        console.log(response.data)
                         if (response.data !== "") {
                             this.game_log = this.game_log.concat(response.data.split(";"))
                         }

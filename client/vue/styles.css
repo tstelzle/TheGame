@@ -39,7 +39,7 @@
     flex-direction: column;
     align-items: center;
     flex-basis: 70%;
-    flex-grow: 2;
+    /*flex-grow: 2;*/
     height: 75vh;
 }
 
@@ -90,17 +90,24 @@
     vertical-align: middle;
 }
 
-.sidepane {
-    position: relative;
-}
-
 .log-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     z-index: 10;
     position: absolute;
-    width: 40%;
+    width: 20%;
+    overflow: auto;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 10;
+    position: absolute;
+    width: 20%;
+    overflow: auto;
 }
 
 .sidepane-button-left {
@@ -113,13 +120,14 @@
     right: 0;
 }
 
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    z-index: 10;
-    position: relative;
-    width: 40%;
+.sidepane-container {
+    height: 75vh;
+}
+
+.log-text {
+    margin: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
 }
 
 .log-text-box {
