@@ -1,5 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource
+from flask_cors import cross_origin
 
 from module_model import Data, Game, Player
 from app import app
@@ -9,6 +10,7 @@ class PlayerController(Resource):
 
     @staticmethod
     @app.route("/player/<game_uid>/<name>", methods=["POST"])
+    @cross_origin()
     def add_player(game_uid: str, name: str):
         player = Player(name)
         game, game_status = Data.get_game(game_uid)
