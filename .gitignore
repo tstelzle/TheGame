@@ -2,3 +2,4 @@
 **/__pycache__/
 /client/python/client.spec
 /client/python/build/
+/.env.prod

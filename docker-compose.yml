@@ -20,9 +20,15 @@ services:
       - "thegame-db"
     ports:
       - "9201:5050"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
 
   thegame-db:
     image: mongo:latest
     container_name: thegame-db
     ports:
-      - "27000:27017"
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
