@@ -2,6 +2,7 @@ from flask import jsonify
 from flask_restful import Resource
 from flask_cors import cross_origin
 
+import database_connection
 from module_model import Data, Game, Player
 from app import app
 
@@ -13,7 +14,7 @@ class PlayerController(Resource):
     @cross_origin()
     def add_player(game_uid: str, name: str):
         player = Player(name)
-        game, game_status = Data.get_game(game_uid)
+        game, game_status = database_connection.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",

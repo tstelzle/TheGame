@@ -3,10 +3,12 @@ from module_model.Pile import Pile
 from module_model.Deck import Deck
 from module_model.GameStatus import GameStatus
 
+import database_connection
+
 
 class Game:
 
-    def __init__(self, name: str, game_id: int, starting_cards = 5):
+    def __init__(self, name: str, game_id: int, starting_cards=5):
         self.game_id = game_id
         self.name = name
         self.players = []
@@ -17,6 +19,8 @@ class Game:
         self.cards_to_play = 2
         self.cards_played = 0
         self.state = GameStatus.INITIALIZE
+        self.collection = database_connection.GAME_COLLECTION
+        self.mongo_id = ""
 
     def get_current_player(self) -> Player:
         return self.players[self.current_player]
@@ -28,7 +32,6 @@ class Game:
     def get_next_player_id(self) -> int:
         self.current_player = (self.current_player + 1) % len(self.players)
         return self.current_player
-
 
     @staticmethod
     def initialize_piles() -> [Pile]:
@@ -81,3 +84,18 @@ class Game:
                 return True
 
         return False
+
+    def as_dic(self) -> dict:
+        return {
+            # "__type__": Game,
+            "uid": str(self.game_id),
+            "name": self.name,
+            # "players": self.players,
+            # "piles": self.piles,
+            # "deck": self.deck,
+            "starting_cards": self.starting_cards,
+            # "current_player": self.current_player,
+            "cards_played": self.cards_played,
+            "cards_to_play": self.cards_to_play,
+            "state": self.state.value
+        }
