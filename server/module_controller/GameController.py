@@ -1,9 +1,7 @@
 import uuid
 
-import database_connection
 from app import app
 from flask import jsonify
-from flask_cors import cross_origin
 from flask_restful import Resource
 from module_model import Data, Game, GameStatus
 
@@ -13,7 +11,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/player/<game_uid>/<player_id>", methods=["GET"])
     def get_handcards(game_uid: str, player_id: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -30,7 +28,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/player/valid/<game_uid>/<player_uid>", methods=["GET"])
     def is_player_valid(game_uid: str, player_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -55,9 +53,6 @@ class GameController(Resource):
         game_uid = uuid.uuid1()
         game = Game(name, game_uid.int)
 
-        game_dic = game.as_dic()
-        game.mongo_id = game.collection.insert_one(game_dic).inserted_id
-
         Data.GAMES.append({"id": game_uid, "game": game})
 
         return jsonify(isError=False,
@@ -68,7 +63,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/players/<game_uid>", methods=["GET"])
     def get_players(game_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -85,7 +80,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/currentPlayer/<game_uid>", methods=["GET"])
     def get_current_player(game_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -101,7 +96,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/<game_uid>", methods=["GET"])
     def get_game(game_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -116,7 +111,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/<game_uid>/<player_id>/<pile_id>/<card>", methods=["POST"])
     def play_card(game_uid: str, player_id: str, pile_id: str, card: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -164,7 +159,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/<game_uid>/<player_id>", methods=["POST"])
     def end_turn(game_uid: str, player_id: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -196,7 +191,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/state/<game_uid>", methods=["GET"])
     def get_game_state(game_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -212,7 +207,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/state/<game_uid>/<state>", methods=["POST"])
     def set_game_state(game_uid: str, state: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -229,7 +224,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/player/piles/<game_uid>", methods=["GET"])
     def get_piles(game_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",
@@ -245,7 +240,7 @@ class GameController(Resource):
     @staticmethod
     @app.route("/api/game/deck/<game_uid>", methods=["GET"])
     def get_cards(game_uid: str):
-        game, game_status = database_connection.get_game(game_uid)
+        game, game_status = Data.get_game(game_uid)
         if not game_status:
             return jsonify(isError=True,
                            message="ERROR",

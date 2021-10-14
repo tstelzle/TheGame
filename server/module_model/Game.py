@@ -90,11 +90,11 @@ class Game:
             # "__type__": Game,
             "uid": str(self.game_id),
             "name": self.name,
-            # "players": self.players,
+            "players": [player.as_dic() for player in self.players],
             # "piles": self.piles,
             # "deck": self.deck,
             "starting_cards": self.starting_cards,
-            # "current_player": self.current_player,
+            "current_player": self.current_player,
             "cards_played": self.cards_played,
             "cards_to_play": self.cards_to_play,
             "state": self.state.value

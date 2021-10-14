@@ -10,3 +10,10 @@ class Player:
 
     def add_card(self, card: int):
         self.hand_cards.append(card)
+
+    def as_dic(self) -> dict:
+        return {
+            "name": self.name,
+            "uid": str(self.player_id),
+            "hand_cards": self.hand_cards
+        }
