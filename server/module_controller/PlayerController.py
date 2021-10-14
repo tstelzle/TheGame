@@ -9,8 +9,7 @@ from app import app
 class PlayerController(Resource):
 
     @staticmethod
-    @app.route("/player/<game_uid>/<name>", methods=["POST"])
-    @cross_origin()
+    @app.route("/api/player/<game_uid>/<name>", methods=["POST"])
     def add_player(game_uid: str, name: str):
         player = Player(name)
         game, game_status = Data.get_game(game_uid)
