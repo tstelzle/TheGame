@@ -18,4 +18,4 @@ services:
       dockerfile: Dockerfile
     container_name: thegame-api
     ports:
-      - "9201:5050"
+      - "9201:9201"
