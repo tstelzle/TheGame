@@ -19,12 +19,8 @@ def scheduler():
         time.sleep(1)
 
 
-if __name__ == "__main__":
-    database_connection.setup_database()
-    scheduler_thread = threading.Thread(target=scheduler)
-    scheduler_thread.start()
-    flask_thread = threading.Thread(target=app.run, args=("0.0.0.0", 5050))
-    flask_thread.start()
+database_connection.setup_database()
+scheduler_thread = threading.Thread(target=scheduler)
+scheduler_thread.start()
 
-    scheduler_thread.join()
-    flask_thread.join()
+application = app

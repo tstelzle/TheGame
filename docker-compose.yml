@@ -10,7 +10,7 @@ services:
     environment:
       - NGINX_PORT=80
     depends_on:
-      - "thegame-api"
+      - thegame-api
 
   thegame-api:
     build:
@@ -20,7 +20,7 @@ services:
     depends_on:
       - "thegame-db"
     ports:
-      - "9201:5050"
+      - "9201:9201"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
