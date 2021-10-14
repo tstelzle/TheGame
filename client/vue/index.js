@@ -196,7 +196,7 @@ new Vue({
         },
         get_api() {
             let path = Array.from(arguments).join("/")
-            return fetch("http://" + this.ip + ":" + this.port + "/" + path)
+            return fetch("http://" + this.ip + ":" + this.port + "/api/" + path)
                 .then(response => response.json())
                 .then(responseData => {
                     if (responseData.statusCode === 401) {
@@ -207,7 +207,7 @@ new Vue({
         },
         post_api() {
             let path = Array.from(arguments).join("/")
-            return fetch("http://" + this.ip + ":" + this.port + "/" + path, {
+            return fetch("http://" + this.ip + ":" + this.port + "/api/" + path, {
                 method: "POST"
             })
                 .then(response => response.json())

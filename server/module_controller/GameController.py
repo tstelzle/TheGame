@@ -11,8 +11,7 @@ from module_model import Data, Game, GameStatus
 class GameController(Resource):
 
     @staticmethod
-    @app.route("/player/<game_uid>/<player_id>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/player/<game_uid>/<player_id>", methods=["GET"])
     def get_handcards(game_uid: str, player_id: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -29,8 +28,7 @@ class GameController(Resource):
                        data=player.hand_cards), 200
 
     @staticmethod
-    @app.route("/player/valid/<game_uid>/<player_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/player/valid/<game_uid>/<player_uid>", methods=["GET"])
     def is_player_valid(game_uid: str, player_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -51,8 +49,7 @@ class GameController(Resource):
                        data=""), 400
 
     @staticmethod
-    @app.route("/game/<name>", methods=["POST"])
-    @cross_origin()
+    @app.route("/api/game/<name>", methods=["POST"])
     def add_game(name: str):
         # TODO Check if game with name already exists -> but not really necessary as of uid
         game_uid = uuid.uuid1()
@@ -69,8 +66,7 @@ class GameController(Resource):
                        data=str(game_uid)), 201
 
     @staticmethod
-    @app.route("/players/<game_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/players/<game_uid>", methods=["GET"])
     def get_players(game_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -87,8 +83,7 @@ class GameController(Resource):
                        data=(player_names, game.current_player)), 200
 
     @staticmethod
-    @app.route("/game/currentPlayer/<game_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/game/currentPlayer/<game_uid>", methods=["GET"])
     def get_current_player(game_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -104,8 +99,7 @@ class GameController(Resource):
                        data=player.player_id), 200
 
     @staticmethod
-    @app.route("/game/<game_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/game/<game_uid>", methods=["GET"])
     def get_game(game_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -120,8 +114,7 @@ class GameController(Resource):
                        data=str(game.name)), 201
 
     @staticmethod
-    @app.route("/game/<game_uid>/<player_id>/<pile_id>/<card>", methods=["POST"])
-    @cross_origin()
+    @app.route("/api/game/<game_uid>/<player_id>/<pile_id>/<card>", methods=["POST"])
     def play_card(game_uid: str, player_id: str, pile_id: str, card: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -169,8 +162,7 @@ class GameController(Resource):
                        data="Card Not Accepted"), 400
 
     @staticmethod
-    @app.route("/game/<game_uid>/<player_id>", methods=["POST"])
-    @cross_origin()
+    @app.route("/api/game/<game_uid>/<player_id>", methods=["POST"])
     def end_turn(game_uid: str, player_id: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -202,8 +194,7 @@ class GameController(Resource):
                        data=""), 200
 
     @staticmethod
-    @app.route("/game/state/<game_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/game/state/<game_uid>", methods=["GET"])
     def get_game_state(game_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -219,8 +210,7 @@ class GameController(Resource):
                        data=game.state.value), 200
 
     @staticmethod
-    @app.route("/game/state/<game_uid>/<state>", methods=["POST"])
-    @cross_origin()
+    @app.route("/api/game/state/<game_uid>/<state>", methods=["POST"])
     def set_game_state(game_uid: str, state: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -237,8 +227,7 @@ class GameController(Resource):
                        data=""), 200
 
     @staticmethod
-    @app.route("/player/piles/<game_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/player/piles/<game_uid>", methods=["GET"])
     def get_piles(game_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
@@ -254,8 +243,7 @@ class GameController(Resource):
                        data=top_cards), 200
 
     @staticmethod
-    @app.route("/game/deck/<game_uid>", methods=["GET"])
-    @cross_origin()
+    @app.route("/api/game/deck/<game_uid>", methods=["GET"])
     def get_cards(game_uid: str):
         game, game_status = database_connection.get_game(game_uid)
         if not game_status:
