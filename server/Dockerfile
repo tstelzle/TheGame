@@ -1,9 +1,16 @@
-FROM python:3
-WORKDIR /usr/src
+FROM ubuntu:latest
 
-COPY requirements.txt /usr/src
+RUN apt-get update
+RUN apt-get install python3 -y
+RUN apt-get install python3-pip -y
+RUN apt-get install build-essential python-dev -y
+
+WORKDIR /app
+COPY requirements.txt /app
 RUN pip install -r requirements.txt
 
-COPY . /usr/src
+RUN pip install uwsgi
 
-CMD ["python", "server.py"]
+COPY . /app
+
+CMD ["uwsgi", "--http", ":9201", "--wsgi-file", "server.py"]
