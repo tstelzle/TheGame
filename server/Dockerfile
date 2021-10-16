@@ -7,9 +7,9 @@ RUN apt-get install build-essential python-dev -y
 
 WORKDIR /app
 COPY requirements.txt /app
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-RUN pip install uwsgi
+RUN pip3 install uwsgi
 
 COPY . /app
 
