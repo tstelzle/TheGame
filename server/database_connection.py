@@ -50,4 +50,4 @@ def setup_database():
     create_database_connection()
     game_database = create_database(DATABASE_CLIENT)
     GAME_COLLECTION = create_collection('games', game_database)
-    PLAYER_COLLECTION = create_collection('players', game_database)
+    # PLAYER_COLLECTION = create_collection('players', game_database)
