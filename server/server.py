@@ -1,4 +1,5 @@
 import module_controller
+import os
 
 from app import api, app
 import database_connection
@@ -13,4 +14,10 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(func=module_controller.Data.store_games, trigger="interval", hours=12)
 scheduler.start()
 
-application = app
+server_environment = os.getenv('SERVER_ENVIRONMENT')
+
+if server_environment=="PRODUCTION":
+    application = app
+else:
+    app.config["DEBUG"] = True
+    app.run("0.0.0.0", "9201")

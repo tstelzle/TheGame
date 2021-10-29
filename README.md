@@ -8,30 +8,37 @@ The Client will repeately ask the server for new information and hence is able t
 
 # Run
 
+The Makefile commands, which are explained below, start the TechStack with the frontend-server, backend-api and the database.
+
+## Production
+
 Copy the .env.prod.sample and rename it to .env.prod. Then set the username and password for the mongo database in the .env.prod file.
 Afterwards run this command:
 
 ```shell
-docker-compose --env-file .env.prod up -d
+make production
 ```
 
-## Server
+## Development
+
+Copy the .env.prod.sample and rename it to .env.dev. Then set the username and password for the mongo database in the .env.dev file.
+Afterwards run this command:
 
 ```shell
-cd server
-pip install -r requirements.txt
-python3 server.py
+make development
 ```
 
-### API
+# API
 
 The current API class can be tested and run with the Postman collection.
+Currently not up to date, as a switch to Swagger is in progress.
 
 [Collection](./TheGame.postman_collection.json)
 
 
+# Python Client
 
-## Client
+This client is currently out of date, as a website is more preferred.
 
 ```shell
 cd client
@@ -39,7 +46,7 @@ pip install -r requirements.txt
 python3 client.py
 ```
 
-### Create Executable
+## Create Executable
 
 ```shell
 pip install pyinstaller

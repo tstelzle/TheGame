@@ -6,10 +6,10 @@ RUN apt-get install python3-pip -y
 RUN apt-get install build-essential python-dev -y
 
 WORKDIR /app
+RUN pip3 install uwsgi
+
 COPY requirements.txt /app
 RUN pip3 install -r requirements.txt
-
-RUN pip3 install uwsgi
 
 COPY . /app
 

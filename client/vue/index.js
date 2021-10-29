@@ -7,8 +7,8 @@ new Vue({
     el: '#app',
     data: {
         ip: "localhost",
-        port: "5050",
-        website: "ServerConnect",
+        port: "9201",
+        website: "Setup",
         game_name: "",
         game_uid: "",
         player_name: "",
@@ -36,8 +36,8 @@ new Vue({
         initiale_state() {
             return {
                 ip: "localhost",
-                port: "5050",
-                website: "ServerConnect",
+                port: "9201",
+                website: "Setup",
                 game_name: "",
                 game_uid: "",
                 player_name: "",

@@ -1,0 +1,40 @@
+services:
+  thegame:
+    image: nginx
+    container_name: thegame-dev
+    volumes:
+      - ./client/vue/:/usr/share/nginx/html
+      - ./client/vue/thegame.template:/etc/nginx/conf.d/thegame.template
+    ports:
+      - "9200:80"
+    environment:
+      NGINX_PORT: 80
+      SERVER_ENVIRONMENT: DEVELOPMENT
+      API_CONTAINER: thegame-api-dev
+    depends_on:
+      - thegame-api-dev
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/thegame.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+
+  thegame-api:
+    build:
+      context: server
+      dockerfile: dev.Dockerfile
+    container_name: thegame-api-dev
+    depends_on:
+      - thegame-db-dev
+    ports:
+      - "9201:9201"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      SERVER_ENVIRONMENT: DEVELOPMENT
+
+  thegame-db:
+    image: mongo:latest
+    container_name: thegame-db-dev
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      SERVER_ENVIRONMENT: DEVELOPMENT
