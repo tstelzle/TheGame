@@ -3,3 +3,4 @@
 /client/python/client.spec
 /client/python/build/
 /.env.prod
+/.env.dev

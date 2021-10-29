@@ -47,18 +47,6 @@
             <modal v-if="show_instructions" @close="show_instructions = false"></modal>
         </div>
     </div>
-    <div class="container" v-if="website==='ServerConnect'" id="ServerConnect">
-        <div class="box">
-            <h2>Server Connect</h2>
-        </div>
-        <div class="box">
-            <input v-model="ip">
-            <input v-model="port">
-        </div>
-        <div class="box">
-            <button class="button" v-on:click="changeWebsite('Setup')">Connect</button>
-        </div>
-    </div>
     <div class="container" v-if="website==='Setup'" id="Setup">
         <div class="box">
             <h2>Setup</h2>
