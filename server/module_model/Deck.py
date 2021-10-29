@@ -20,5 +20,5 @@ class DeckSchema(Schema):
     cards = fields.List(fields.Integer())
 
     @post_load
-    def make_store(self, data, **kwargs):
+    def make_deck(self, data, **kwargs):
         return Deck(**data)

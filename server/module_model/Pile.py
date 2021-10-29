@@ -11,5 +11,5 @@ class PileSchema(Schema):
     top_card = fields.Integer()
 
     @post_load
-    def make_store(self, data, **kwargs):
+    def make_pile(self, data, **kwargs):
         return Pile(**data)

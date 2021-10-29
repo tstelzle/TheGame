@@ -20,5 +20,5 @@ class PlayerSchema(Schema):
     hand_cards = fields.List(fields.Integer())
 
     @post_load
-    def make_store(self, data, **kwargs):
+    def make_player(self, data, **kwargs):
         return Player(**data)

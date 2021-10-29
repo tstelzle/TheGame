@@ -50,15 +50,15 @@ class GameController(Resource):
     @app.route("/api/game/<name>", methods=["POST"])
     def add_game(name: str):
         # TODO Check if game with name already exists -> but not really necessary as of uid
-        game_uid = uuid.uuid1()
-        game = Game(name, game_uid.int)
+        game_uid = str(uuid.uuid1())
+        game = Game(game_uid, name)
 
         Data.GAMES.append({"id": game_uid, "game": game})
 
         return jsonify(isError=False,
                        message="CREATED",
                        statusCode=201,
-                       data=str(game_uid)), 201
+                       data=game_uid), 201
 
     @staticmethod
     @app.route("/api/players/<game_uid>", methods=["GET"])
