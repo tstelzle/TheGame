@@ -1,22 +1,28 @@
-from module_model.Player import Player
-from module_model.Pile import Pile
-from module_model.Deck import Deck
+import datetime
+
+from marshmallow import Schema, fields, post_load
+from marshmallow_enum import EnumField
+from module_model.Deck import Deck, DeckSchema
 from module_model.GameStatus import GameStatus
+from module_model.Pile import Pile, PileSchema
+from module_model.Player import Player, PlayerSchema
 
 
 class Game:
 
-    def __init__(self, name: str, game_id: int, starting_cards = 5):
+    def __init__(self, game_id: str, name: str, players=[], piles=None, deck=None, starting_cards=5, current_player=0,
+                 cards_to_play=2, cards_played=0, state=None, last_updated=None):
         self.game_id = game_id
         self.name = name
-        self.players = []
-        self.piles = self.initialize_piles()
-        self.deck = self.create_deck()
+        self.players = players
+        self.piles = piles if piles else self.initialize_piles()
+        self.deck = deck if deck else self.create_deck()
         self.starting_cards = starting_cards
-        self.current_player = 0
-        self.cards_to_play = 2
-        self.cards_played = 0
-        self.state = GameStatus.INITIALIZE
+        self.current_player = current_player
+        self.cards_to_play = cards_to_play
+        self.cards_played = cards_played
+        self.state = GameStatus(state) if state else GameStatus.INITIALIZE
+        self.last_updated = datetime.datetime.now(datetime.timezone.utc)
 
     def get_current_player(self) -> Player:
         return self.players[self.current_player]
@@ -28,7 +34,6 @@ class Game:
     def get_next_player_id(self) -> int:
         self.current_player = (self.current_player + 1) % len(self.players)
         return self.current_player
-
 
     @staticmethod
     def initialize_piles() -> [Pile]:
@@ -81,3 +86,21 @@ class Game:
                 return True
 
         return False
+
+
+class GameSchema(Schema):
+    game_id = fields.Str()
+    name = fields.Str()
+    players = fields.List(fields.Nested(PlayerSchema))
+    piles = fields.List(fields.Nested(PileSchema))
+    deck = fields.Nested(DeckSchema)
+    starting_cards = fields.Integer()
+    current_player = fields.Integer()
+    cards_to_play = fields.Integer()
+    cards_played = fields.Integer()
+    state = EnumField(GameStatus)
+    last_updated = fields.DateTime()
+
+    @post_load
+    def make_game(self, data, **kwargs):
+        return Game(**data)

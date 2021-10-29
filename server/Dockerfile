@@ -13,4 +13,4 @@ RUN pip3 install uwsgi
 
 COPY . /app
 
-CMD ["uwsgi", "--http", ":9201", "--wsgi-file", "server.py"]
+CMD ["uwsgi", "--http", ":9201", "--enable-threads", "--wsgi-file", "server.py"]

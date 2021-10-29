@@ -8,6 +8,13 @@ The Client will repeately ask the server for new information and hence is able t
 
 # Run
 
+Copy the .env.prod.sample and rename it to .env.prod. Then set the username and password for the mongo database in the .env.prod file.
+Afterwards run this command:
+
+```shell
+docker-compose --env-file .env.prod up -d
+```
+
 ## Server
 
 ```shell

@@ -17,5 +17,19 @@ services:
       context: server
       dockerfile: Dockerfile
     container_name: thegame-api
+    depends_on:
+      - "thegame-db"
     ports:
       - "9201:9201"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+  thegame-db:
+    image: mongo:latest
+    container_name: thegame-db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}

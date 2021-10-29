@@ -1,8 +1,7 @@
 from flask import jsonify
 from flask_restful import Resource
-from flask_cors import cross_origin
 
-from module_model import Data, Game, Player
+from module_model import Data, Player
 from app import app
 
 
