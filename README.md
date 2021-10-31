@@ -10,6 +10,10 @@ The Client will repeately ask the server for new information and hence is able t
 
 The Makefile commands, which are explained below, start the TechStack with the frontend-server, backend-api and the database.
 
+## Requirements
+You will need a docker-composer version >= 1.25.0. 
+For this a docker version of >= 19 is recommended.
+
 ## Production
 Copy the .env.prod.sample and rename it to .env.prod. Then set the username and password for the mongo database in the .env.prod file.
 Afterwards run this command:
