@@ -6,8 +6,8 @@ Vue.component("modal", {
 new Vue({
     el: '#app',
     data: {
-        ip: "localhost",
-        port: "9201",
+        ip: "thegame.ftbc.ovh",
+        port: "",
         website: "Setup",
         game_name: "",
         game_uid: "",
@@ -196,7 +196,7 @@ new Vue({
         },
         get_api() {
             let path = Array.from(arguments).join("/")
-            return fetch("http://" + this.ip + ":" + this.port + "/api/" + path)
+            return fetch("https://" + this.ip + "/api/" + path)
                 .then(response => response.json())
                 .then(responseData => {
                     if (responseData.statusCode === 401) {
@@ -207,7 +207,7 @@ new Vue({
         },
         post_api() {
             let path = Array.from(arguments).join("/")
-            return fetch("http://" + this.ip + ":" + this.port + "/api/" + path, {
+            return fetch("https://" + this.ip + "/api/" + path, {
                 method: "POST"
             })
                 .then(response => response.json())
