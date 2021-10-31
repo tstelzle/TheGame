@@ -1,5 +1,5 @@
 services:
-  thegame:
+  thegame-service-dev:
     image: nginx
     container_name: thegame-dev
     volumes:
@@ -12,24 +12,25 @@ services:
       SERVER_ENVIRONMENT: DEVELOPMENT
       API_CONTAINER: thegame-api-dev
     depends_on:
-      - thegame-api-dev
+      - "thegame-api-service-dev"
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/thegame.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 
-  thegame-api:
+  thegame-api-service-dev:
     build:
       context: server
       dockerfile: dev.Dockerfile
     container_name: thegame-api-dev
     depends_on:
-      - thegame-db-dev
+      - "thegame-db-service-dev"
     ports:
       - "9201:9201"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       SERVER_ENVIRONMENT: DEVELOPMENT
+      DB_CONTAINER: thegame-db-dev
 
-  thegame-db:
+  thegame-db-service-dev:
     image: mongo:latest
     container_name: thegame-db-dev
     ports:

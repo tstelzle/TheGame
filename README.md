@@ -11,30 +11,38 @@ The Client will repeately ask the server for new information and hence is able t
 The Makefile commands, which are explained below, start the TechStack with the frontend-server, backend-api and the database.
 
 ## Production
-
 Copy the .env.prod.sample and rename it to .env.prod. Then set the username and password for the mongo database in the .env.prod file.
 Afterwards run this command:
-
 ```shell
-make production
+make run ENV=PROD
 ```
 
 ## Development
-
 Copy the .env.prod.sample and rename it to .env.dev. Then set the username and password for the mongo database in the .env.dev file.
 Afterwards run this command:
-
 ```shell
-make development
+make run ENV=DEV
 ```
 
 # API
-
 The current API class can be tested and run with the Postman collection.
 Currently not up to date, as a switch to Swagger is in progress.
 
 [Collection](./TheGame.postman_collection.json)
 
+# Commands
+
+## Stop
+This command will stop all running DEV and PROD containers.
+```shell
+make stop
+```
+
+## Down
+This command will stop and remove all DEV and PROD containers.
+```shell
+make reset
+```
 
 # Python Client
 

@@ -12,7 +12,7 @@ networks:
                 external: true
 
 services:
-  thegame:
+  thegame-service-prod:
     image: nginx
     container_name: thegame
     volumes:
@@ -25,20 +25,20 @@ services:
       SERVER_ENVIRONMENT: PRODUCTION
       API_CONTAINER: thegame-api
     depends_on:
-      - thegame-api
+      - "thegame-api-service-prod"
     networks:
       - proxy-net
       - default-net
       - default-ext-net
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/thegame.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 
-  thegame-api:
+  thegame-api-service-prod:
     build:
       context: server
       dockerfile: prod.Dockerfile
     container_name: thegame-api
     depends_on:
-      - "thegame-db"
+      - "thegame-db-service-prod"
     ports:
       - "9201:9201"
     networks:
@@ -49,8 +49,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       SERVER_ENVIRONMENT: PRODUCTION
+      DB_CONTAINER: thegame-db
 
-  thegame-db:
+  thegame-db-service-prod:
     image: mongo:latest
     container_name: thegame-db
     ports:

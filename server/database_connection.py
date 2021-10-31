@@ -14,8 +14,9 @@ def create_database_connection() -> None:
     global DATABASE_CLIENT
     user = os.getenv('MONGO_INITDB_ROOT_USERNAME')
     password = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
+    db_container = os.getenv('DB_CONTAINER')
 
-    connection_url = "mongodb://{0}:{1}@thegame-db:27017".format(user, password)
+    connection_url = "mongodb://{0}:{1}@{2}:27017".format(user, password, db_container)
 
     connection_not_established = True
     while connection_not_established:
