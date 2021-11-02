@@ -4,3 +4,4 @@
 /client/python/build/
 /.env.prod
 /.env.dev
+**/log_file.txt
